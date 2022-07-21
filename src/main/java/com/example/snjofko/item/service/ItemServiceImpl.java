@@ -1,5 +1,6 @@
 package com.example.snjofko.item.service;
 
+import com.example.snjofko.app_user.model.dto.UserPrincipal;
 import com.example.snjofko.app_user.repository.AppUserRepository;
 import com.example.snjofko.item.model.command.ItemCreateCommand;
 import com.example.snjofko.item.model.command.ItemFilterCommand;
@@ -10,6 +11,7 @@ import com.example.snjofko.item.repository.ItemRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO createItem(ItemCreateCommand cmd) {
         Item item = cmd.toEntity();
-        // TODO: after security, set user on item
-        item.setUser(userRepository.findById(1L).orElse(null));
+        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        item.setUser(userRepository.findById(user.getId()).orElse(null));
 
         return ItemDTO.fromEntity(itemRepository.save(item));
     }

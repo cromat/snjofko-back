@@ -3,8 +3,10 @@ package com.example.snjofko.app_user.service;
 import com.example.snjofko.app_user.model.command.LoginCommand;
 import com.example.snjofko.app_user.model.command.SignupCommand;
 import com.example.snjofko.app_user.model.dto.LoginResponseDTO;
+import com.example.snjofko.app_user.model.dto.UserPrincipal;
 import com.example.snjofko.app_user.model.entity.AppUser;
 import com.example.snjofko.app_user.repository.AppUserRepository;
+import com.example.snjofko.security.JwtTokenUtil;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,10 +18,12 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    public AppUserServiceImpl(AppUserRepository appUserRepository, AuthenticationManager authenticationManager) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         this.appUserRepository = appUserRepository;
         this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
@@ -44,7 +48,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public LoginResponseDTO login(LoginCommand cmd) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(null, cmd));
-        return null;
+        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+        return new LoginResponseDTO(user, jwtTokenUtil.generateToken(user));
     }
 
 }

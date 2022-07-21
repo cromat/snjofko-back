@@ -11,3 +11,10 @@ spring:
     password: snjofko
 
     security.basic.enabled: false
+
+
+jwt:
+  secret: jds0h4PK7yaL7QAbDZqAfEO8LpptJTH7Yo3LZpWbo5aTGN98Wc4JxFKbPi8kErdWru0APz7VgaXpf2gV48gArpjtA8i7WFo7mdC6PLnW5xw2hvp9AyvEtmbrqfjKNA1AR5MzCtQaPxq3A9mu4loU7DUYEvRbUJFollYwVPZuk5wIG4105wmwmZsXe63G0RGpcDR2U6789ksdL3KegFQmYWZj8H9Oq8u4y4vnht8gybVpRGXBkjWW92VaBNyqwulxA0q9FOI5OuWfYH6JSEn9fwxPJfZzSVWeLK9LJPT6et5VxkTYzSqBZvPPczVZAFu4OEpD67Su7Xw
+  expirationInMinutes: 1500
+  issuer: snjofko
+  allowedOrigin: 'http://localhost'

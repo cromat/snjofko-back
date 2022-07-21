@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,6 +27,12 @@ public class AppUserAuthProvider implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof UserPrincipal) {
+            return auth;
+        }
+
         LoginCommand cmd = (LoginCommand) authentication.getCredentials();
         BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
         Optional<AppUser> user = appUserRepository.findByUsername(cmd.getUsername());
