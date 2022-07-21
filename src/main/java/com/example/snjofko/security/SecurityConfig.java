@@ -2,11 +2,13 @@ package com.example.snjofko.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -14,16 +16,21 @@ public class SecurityConfig {
 
     private final JwtAuthEntryPont jwtAuthEntryPont;
     private final JwtRequestFilter jwtRequestFilter;
+    private final AuthenticationManager authenticationManager;
 
-    public SecurityConfig(JwtAuthEntryPont jwtAuthEntryPont, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(JwtAuthEntryPont jwtAuthEntryPont,
+                          JwtRequestFilter jwtRequestFilter,
+                          AuthenticationManager authenticationManager) {
         this.jwtAuthEntryPont = jwtAuthEntryPont;
         this.jwtRequestFilter = jwtRequestFilter;
+        this.authenticationManager = authenticationManager;
     }
 
     public static final String AUTH_PATH = "/api/users/";
+    public static final String LOGIN_PATH = AUTH_PATH + "login";
 
     private final String[] IGNORING_ROUTES = {
-            AUTH_PATH + "login",
+            LOGIN_PATH,
             AUTH_PATH + "signup",
     };
 
@@ -45,7 +52,6 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

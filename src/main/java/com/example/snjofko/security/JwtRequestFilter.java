@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.example.snjofko.security.SecurityConfig.AUTH_PATH;
 
@@ -42,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                jwtTokenUtil.getPrincipalFromToken(token), null
+                jwtTokenUtil.getPrincipalFromToken(token), null, new ArrayList<>()
         );
 
         auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
