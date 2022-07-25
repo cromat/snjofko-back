@@ -34,6 +34,8 @@ public class Item {
 
     private Boolean isActive;
 
+    private Double price;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser user;

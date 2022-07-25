@@ -22,6 +22,7 @@ public class ItemDTO {
     private OffsetDateTime created;
     private OffsetDateTime modified;
     private Boolean isActive;
+    private Double price;
     private UserPrincipal user;
 
     public static ItemDTO fromEntity(Item entity) {
@@ -35,6 +36,7 @@ public class ItemDTO {
                     .modified(entity.getModified())
                     .isActive(entity.getIsActive())
                     .user(UserPrincipal.fromAppUser(entity.getUser()))
+                    .price(entity.getPrice())
                     .build();
         }
         return null;
