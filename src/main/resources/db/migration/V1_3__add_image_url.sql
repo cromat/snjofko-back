@@ -1,0 +1,1 @@
+ALTER TABLE public.item ADD COLUMN image_url TEXT DEFAULT 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png';

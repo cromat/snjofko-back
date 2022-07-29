@@ -1,6 +1,7 @@
 package com.example.snjofko.item.service;
 
 import com.example.snjofko.app_user.model.dto.UserPrincipal;
+import com.example.snjofko.app_user.model.entity.AppUser;
 import com.example.snjofko.app_user.repository.AppUserRepository;
 import com.example.snjofko.item.model.command.ItemCreateCommand;
 import com.example.snjofko.item.model.command.ItemFilterCommand;
@@ -36,8 +37,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO createItem(ItemCreateCommand cmd) {
         Item item = cmd.toEntity();
-        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        item.setUser(userRepository.findById(user.getId()).orElse(null));
+//        UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        item.setUser(userRepository.findById(user.getId()).orElse(null));
+        AppUser user = new AppUser();
+        user.setId(1L);
+        item.setUser(user);
 
         return ItemDTO.fromEntity(itemRepository.save(item));
     }
